@@ -1,0 +1,66 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon May 26 18:52:10 2025
+
+@author: universo
+"""
+
+def dd_a_dms(coordenada, tipo):
+    direccion = ''
+    if tipo == 'latitud':
+        direccion = 'N' if coordenada >= 0 else 'S'
+    elif tipo == 'longitud':
+        direccion = 'E' if coordenada >= 0 else 'W'
+
+    coordenada_abs = abs(coordenada)
+    grados = int(coordenada_abs)
+    minutos_completos = (coordenada_abs - grados) * 60
+    minutos = int(minutos_completos)
+    segundos = (minutos_completos - minutos) * 60
+
+    return f"{grados}° {minutos}' {segundos:.4f}'' {direccion}"
+
+def dms_a_dd(grados, minutos, segundos, direccion):
+    dd = abs(grados) + minutos / 60 + segundos / 3600
+    if direccion.upper() in ['S', 'W']:
+        dd *= -1
+    return dd
+
+def menu():
+    print("Seleccione el tipo de conversión que desea realizar:")
+    print("1. DD a DMS")
+    print("2. DMS a DD")
+    opcion = input(">> ")
+
+    if opcion == '1':
+        lat_dd = float(input("Ingrese el valor de la Latitud en DD\n>> "))
+        lon_dd = float(input("Ingrese el valor de la Longitud en DD\n>> "))
+        print("El valor de la latitud es:")
+        print(dd_a_dms(lat_dd, 'latitud'))
+        print("El valor de la longitud es:")
+        print(dd_a_dms(lon_dd, 'longitud'))
+
+    elif opcion == '2':
+        print("Ingrese los valores de la Latitud en DMS:")
+        lat_g = int(input("Grados:\n>> "))
+        lat_m = int(input("Minutos:\n>> "))
+        lat_s = float(input("Segundos:\n>> "))
+        lat_dir = input("Dirección (N/S):\n>> ")
+
+        print("Ingrese los valores de la Longitud en DMS:")
+        lon_g = int(input("Grados:\n>> "))
+        lon_m = int(input("Minutos:\n>> "))
+        lon_s = float(input("Segundos:\n>> "))
+        lon_dir = input("Dirección (E/W):\n>> ")
+
+        lat_dd = dms_a_dd(lat_g, lat_m, lat_s, lat_dir)
+        lon_dd = dms_a_dd(lon_g, lon_m, lon_s, lon_dir)
+
+        print(f"La coordenada en DD es:")
+        print(f"Latitud: {lat_dd}")
+        print(f"Longitud: {lon_dd}")
+
+    else:
+        print("Opción no válida. Intente de nuevo.")
+
+if __name__ == "__main__":menu()
